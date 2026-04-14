@@ -15,7 +15,7 @@ import { ManagedCloudProvider } from './context/ManagedCloudProvider.jsx';
 
 export default function App() {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename={import.meta.env.BASE_URL}>
       <CloudProvider>
         <AppProvider>
           <InnerApp />
