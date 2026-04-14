@@ -381,6 +381,17 @@ export default function Pengaturan() {
               </div>
             </div>
           )}
+
+        {/* ─── Tentang ─── */}
+        <div className="about-section">
+          <div className="about-meta">
+            <strong>Buwuhan Tracker</strong> v1.2.0<br />
+            &copy; 2026 • Dibuat untuk memudahkan hajatan Anda.
+          </div>
+          <div style={{ display: 'flex', gap: 12 }}>
+            <a href="/privacy.html" target="_blank" className="legal-link">Kebijakan Privasi</a>
+            <a href="/terms.html" target="_blank" className="legal-link">Syarat & Ketentuan</a>
+          </div>
         </div>
 
       </div>

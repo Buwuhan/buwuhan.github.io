@@ -712,4 +712,41 @@ select option {
 .text-gold { color: var(--gold-400); }
 .font-bold { font-weight: 700; }
 .truncate { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.w-full { width: 100%; }
+/* ─── Legal Links ───────────────────────────────────────── */
+.legal-footer {
+  margin-top: 12px;
+  padding: 0 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.legal-link {
+  font-size: 0.65rem;
+  color: var(--text-muted);
+  transition: color 0.2s;
+  display: inline-block;
+}
+
+.legal-link:hover {
+  color: var(--gold-400);
+  text-decoration: underline;
+}
+
+.legal-divider {
+  font-size: 0.65rem;
+  color: var(--border-light);
+  margin: 0 4px;
+}
+
+.about-section {
+  border-top: 1px solid var(--border);
+  padding-top: 16px;
+  margin-top: 8px;
+}
+
+.about-meta {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+}
