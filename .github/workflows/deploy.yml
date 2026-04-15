@@ -21,6 +21,8 @@ jobs:
         run: |
           npm ci --legacy-peer-deps
           npm run build
+        env:
+          VITE_GOOGLE_CLIENT_ID: ${{ secrets.VITE_GOOGLE_CLIENT_ID || vars.VITE_GOOGLE_CLIENT_ID }}
 
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@v4
