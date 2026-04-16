@@ -601,6 +601,14 @@ select option {
   margin-top: 20px;
 }
 
+.legal-link {
+  font-size: 0.8rem;
+  font-weight: 400;
+  color: var(--text-muted);
+  text-decoration: underline;
+}
+.legal-link:hover { color: var(--gold-400); }
+
 /* ─── Saldo Colors ──────────────────────────────────────── */
 .saldo-piutang { color: var(--sage-400); font-weight: 700; }
 .saldo-hutang { color: var(--rose-400); font-weight: 700; }

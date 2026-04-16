@@ -82,15 +82,6 @@ export default function Sidebar() {
             <span className="sync-text">Sinkronisasi Google Drive belum dikonfigurasi</span>
           </div>
         )}
-
-        <div className="legal-footer">
-          <div style={{ display: 'flex', flexWrap: 'wrap' }}>
-            <a href="/privacy.html" target="_blank" className="legal-link">Kebijakan Privasi</a>
-            <span className="legal-divider">•</span>
-            <a href="/terms.html" target="_blank" className="legal-link">Syarat Ketentuan</a>
-          </div>
-          <div className="legal-link" style={{ opacity: 0.5 }}>v1.2.0 • Buwuhan Tracker</div>
-        </div>
       </div>
     </aside>
   );
