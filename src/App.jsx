@@ -15,7 +15,9 @@ import { GoogleDriveProvider } from './context/GoogleDriveContext.jsx';
 import { ManagedCloudProvider } from './context/ManagedCloudProvider.jsx';
 import { useCloud } from './context/CloudContext.jsx';
 import { useApp } from './context/AppContext.jsx';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { mergeData } from './utils/merge.js';
+import Modal from './components/UI/Modal.jsx';
 
 export default function App() {
   return (
@@ -70,29 +72,100 @@ function CloudProvider({ children }) {
 }
 
 /**
- * SyncMediator: Menghubungkan CloudContext dan AppContext secara langsung.
+ * SyncMediator: Menghubungkan CloudContext dan AppContext.
+ * Juga menangani konflik jika data lokal dan cloud berbeda.
  */
 function SyncMediator() {
   const { scheduleSync, onDataLoaded } = useCloud();
   const { data, loadFromExternal } = useApp();
   const lastCloudDataRef = useRef(null);
 
+  // State untuk menangani konflik
+  const [conflict, setConflict] = useState(null); // { local, cloud }
+
+  // Sync lokal -> cloud secara berkala saat tidak ada konflik aktif
   useEffect(() => {
-    if (data && scheduleSync) {
+    if (data && scheduleSync && !conflict) {
       scheduleSync(data);
     }
-  }, [data, scheduleSync]);
+  }, [data, scheduleSync, conflict]);
 
   useEffect(() => {
     if (onDataLoaded) {
       return onDataLoaded((cloudData) => {
-        if (JSON.stringify(cloudData) !== JSON.stringify(lastCloudDataRef.current)) {
-          lastCloudDataRef.current = cloudData;
-          loadFromExternal(cloudData);
+        // Abaikan jika data dari cloud persis sama dengan snapshot terakhir kita
+        if (JSON.stringify(cloudData) === JSON.stringify(lastCloudDataRef.current)) {
+          return; 
+        }
+
+        const l_len = (data.orang?.length || 0) + (data.acara?.length || 0) + (data.transaksi?.length || 0);
+        const c_len = (cloudData.orang?.length || 0) + (cloudData.acara?.length || 0) + (cloudData.transaksi?.length || 0);
+
+        if (l_len === 0 || c_len === 0) {
+          // Kasus paling aman: Salah satu kosong. Ambil cloud atau biarkan lokal ter-push otomatis
+          if (c_len > 0) {
+            lastCloudDataRef.current = cloudData;
+            loadFromExternal(cloudData);
+          }
+          // Jika c_len === 0, useEffect scheduleSync otomatis mendorong lokal ke cloud
+        } else {
+          // Keduanya punya data. Periksa perbedaannya.
+          const l_str = JSON.stringify({ orang: data.orang, acara: data.acara, transaksi: data.transaksi });
+          const c_str = JSON.stringify({ orang: cloudData.orang, acara: cloudData.acara, transaksi: cloudData.transaksi });
+          
+          if (l_str !== c_str) {
+            // Berbeda! Munculkan dialog konflik.
+            setConflict({ local: data, cloud: cloudData });
+          } else {
+            // Sama isinya, anggap tersinkronisasi.
+            lastCloudDataRef.current = cloudData;
+            loadFromExternal(cloudData);
+          }
         }
       });
     }
-  }, [onDataLoaded, loadFromExternal]);
+  }, [onDataLoaded, data, loadFromExternal]);
 
-  return null;
+  // Handler Resolusi Konflik
+  const handleUseLocal = () => {
+    lastCloudDataRef.current = conflict.local; // Anggap sinkron
+    scheduleSync(conflict.local); // Paksa upload
+    setConflict(null);
+  };
+
+  const handleUseCloud = () => {
+    lastCloudDataRef.current = conflict.cloud;
+    loadFromExternal(conflict.cloud); // Timpa lokal
+    setConflict(null);
+  };
+
+  const handleMerge = () => {
+    const merged = mergeData(conflict.local, conflict.cloud);
+    lastCloudDataRef.current = merged;
+    loadFromExternal(merged);
+    scheduleSync(merged);
+    setConflict(null);
+  };
+
+  if (!conflict) return null;
+
+  return (
+    <Modal isOpen={true} onClose={() => {}} title="Konflik Sinkronisasi">
+      <div style={{ marginBottom: '1.5rem' }}>
+        <p>Aplikasi mendeteksi bahwa terdapat data yang pernah Anda simpan secara lokal (tanpa login), dan ada juga data sebelumnya di Google Drive Anda.</p>
+        <p style={{ marginTop: '0.75rem', fontWeight: 600 }}>Apa yang ingin Anda lakukan terkait kedua data ini?</p>
+      </div>
+      <div className="flex" style={{ flexDirection: 'column', gap: '0.75rem' }}>
+        <button className="btn btn-primary" onClick={handleMerge} style={{ width: '100%', justifyContent: 'center' }}>
+          Gabungkan Data (Merge Lokal + Cloud)
+        </button>
+        <button className="btn btn-secondary" onClick={handleUseLocal} style={{ width: '100%', justifyContent: 'center' }}>
+          Gunakan Lokal (Timpa & Hapus Data Drive)
+        </button>
+        <button className="btn btn-secondary" onClick={handleUseCloud} style={{ width: '100%', justifyContent: 'center' }}>
+          Gunakan Drive (Timpa & Hapus Data Lokal)
+        </button>
+      </div>
+    </Modal>
+  );
 }
