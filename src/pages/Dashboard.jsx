@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useApp } from '../context/AppContext.jsx';
-import { formatRupiah, formatTanggalSingkat, formatSaldo, toInputDate } from '../utils/format.js';
+import { formatRupiah, formatTanggalSingkat, formatSaldo, toInputDate, capitalizeWords } from '../utils/format.js';
 import Modal from '../components/UI/Modal.jsx';
 
 export default function Dashboard() {
@@ -151,7 +151,10 @@ function QuickAddModal({ isOpen, onClose }) {
     tanggal: toInputDate(),
   });
 
-  const set = (k, v) => setForm(f => ({ ...f, [k]: v }));
+  const set = (k, v) => {
+    const caps = ['namaBaruOrang', 'desaBaruOrang', 'namaBaruAcara'];
+    setForm(f => ({ ...f, [k]: caps.includes(k) ? capitalizeWords(v) : v }));
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();

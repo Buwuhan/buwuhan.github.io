@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useApp } from '../context/AppContext.jsx';
-import { formatTanggalSingkat, formatRupiah, toInputDate } from '../utils/format.js';
+import { formatTanggalSingkat, formatRupiah, toInputDate, capitalizeWords } from '../utils/format.js';
 import Modal from '../components/UI/Modal.jsx';
 
 const JENIS_ACARA = ['Pernikahan','Khitanan','Syukuran','Kelahiran','Aqiqah','Sunatan','Pindahan','Selametan','Lainnya'];
@@ -18,7 +18,10 @@ export default function Acara() {
   const [showModal, setShowModal] = useState(false);
   const [editing, setEditing] = useState(null);
   const [form, setForm] = useState({ nama: '', tanggal: toInputDate(), jenis: 'Pernikahan', milik: 'sendiri', tempat: '', catatan: '' });
-  const set = (k, v) => setForm(f => ({ ...f, [k]: v }));
+  const set = (k, v) => {
+    const caps = ['nama', 'tempat'];
+    setForm(f => ({ ...f, [k]: caps.includes(k) ? capitalizeWords(v) : v }));
+  };
 
   const acaraFinal = data.acara
     .filter(a =>

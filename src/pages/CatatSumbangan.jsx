@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useApp } from '../context/AppContext.jsx';
-import { toInputDate } from '../utils/format.js';
+import { toInputDate, capitalizeWords } from '../utils/format.js';
 
 const JENIS_ACARA = ['Pernikahan','Khitanan','Syukuran','Kelahiran','Aqiqah','Sunatan','Pindahan','Selametan','Lainnya'];
 
@@ -15,12 +15,18 @@ export default function CatatSumbangan() {
   // ─── Step 1: Data Orang ───────────────────────────────────
   const [orangId, setOrangId] = useState('');
   const [formOrang, setFormOrang] = useState({ nama: '', desa: '', telepon: '' });
-  const setO = (k, v) => setFormOrang(f => ({ ...f, [k]: v }));
+  const setO = (k, v) => {
+    const caps = ['nama', 'desa'];
+    setFormOrang(f => ({ ...f, [k]: caps.includes(k) ? capitalizeWords(v) : v }));
+  };
 
   // ─── Step 2: Data Acara ───────────────────────────────────
   const [acaraId, setAcaraId] = useState('');
   const [formAcara, setFormAcara] = useState({ nama: '', tanggal: toInputDate(), jenis: 'Pernikahan', milik: 'sendiri', tempat: '' });
-  const setA = (k, v) => setFormAcara(f => ({ ...f, [k]: v }));
+  const setA = (k, v) => {
+    const caps = ['nama', 'tempat'];
+    setFormAcara(f => ({ ...f, [k]: caps.includes(k) ? capitalizeWords(v) : v }));
+  };
 
   // ─── Step 3: Sumbangan ───────────────────────────────────
   const [formTrx, setFormTrx] = useState({

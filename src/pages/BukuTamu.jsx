@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useApp } from '../context/AppContext.jsx';
-import { formatRupiah, formatSaldo } from '../utils/format.js';
+import { formatRupiah, formatSaldo, capitalizeWords } from '../utils/format.js';
 import Modal from '../components/UI/Modal.jsx';
 
 export default function BukuTamu() {
@@ -12,7 +12,10 @@ export default function BukuTamu() {
   const [form, setForm] = useState({ nama: '', desa: '', telepon: '', catatan: '' });
   const [sortBy, setSortBy] = useState('nama'); // nama | saldo
 
-  const set = (k, v) => setForm(f => ({ ...f, [k]: v }));
+  const set = (k, v) => {
+    const caps = ['nama', 'desa'];
+    setForm(f => ({ ...f, [k]: caps.includes(k) ? capitalizeWords(v) : v }));
+  };
 
   const orangFinal = data.orang
     .map(o => ({ ...o, saldo: hitungSaldoOrang(o.id) }))

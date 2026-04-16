@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { useApp } from '../context/AppContext.jsx';
-import { formatRupiah, formatTanggal, formatSaldo, toInputDate } from '../utils/format.js';
+import { formatRupiah, formatTanggal, formatSaldo, toInputDate, capitalizeWords } from '../utils/format.js';
 import Modal from '../components/UI/Modal.jsx';
 
 export default function DetailOrang() {
@@ -161,7 +161,10 @@ function TambahTrxModal({ isOpen, onClose, orangId }) {
     namaBarang: data.jenisBarang[0] || 'Beras', jumlahBarang: '', satuanBarang: 'kg',
     catatan: '', tanggal: toInputDate(),
   });
-  const set = (k, v) => setForm(f => ({ ...f, [k]: v }));
+  const set = (k, v) => {
+    const caps = ['namaBaruAcara'];
+    setForm(f => ({ ...f, [k]: caps.includes(k) ? capitalizeWords(v) : v }));
+  };
   const { tambahAcara } = useApp();
 
   const handleSubmit = (e) => {

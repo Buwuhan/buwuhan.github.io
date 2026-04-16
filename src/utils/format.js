@@ -70,3 +70,12 @@ export function formatSaldo(saldo) {
   if (saldo < 0) return { label: formatRupiah(Math.abs(saldo)), type: 'hutang' };
   return { label: 'Lunas', type: 'lunas' };
 }
+/**
+ * Kapitalisasi awal setiap kata (Title Case)
+ * @param {string} str
+ * @returns {string}
+ */
+export function capitalizeWords(str) {
+  if (!str) return '';
+  return str.replace(/(^\w|\s\w)/g, m => m.toUpperCase());
+}
