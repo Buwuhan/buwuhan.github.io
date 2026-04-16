@@ -31,8 +31,9 @@ export default function Dashboard() {
       {/* Header */}
       <div className="page-header">
         <div>
-          <h1 className="page-title">
-            {data.profile.namaKeluarga ? `Keluarga ${data.profile.namaKeluarga}` : 'Buwuhan 🎋'}
+          <h1 className="page-title" style={{ display: 'flex', alignItems: 'center' }}>
+            {data.profile.namaKeluarga ? `Keluarga ${data.profile.namaKeluarga}` : 'Buwuhan'}
+            {!data.profile.namaKeluarga && <img src="/favicon.svg" alt="logo" width="28" height="28" style={{ marginLeft: '10px' }} />}
           </h1>
           <p className="page-subtitle">Catatan sumbangan hajatan Anda</p>
         </div>

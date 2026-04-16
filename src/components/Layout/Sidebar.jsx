@@ -17,7 +17,10 @@ export default function Sidebar() {
   return (
     <aside className="sidebar">
       <div className="sidebar-logo">
-        <div className="logo-name">🎋 Buwuhan</div>
+        <div className="logo-name">
+          <img src="/favicon.svg" alt="Logo" className="sidebar-icon-img" />
+          <span className="logo-text">Buwuhan</span>
+        </div>
         <div className="logo-sub">Pencatat Sumbangan Hajatan</div>
       </div>
 

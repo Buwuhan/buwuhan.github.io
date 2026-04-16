@@ -18,23 +18,8 @@ export default function Landing() {
       {/* Header */}
       <header className="landing-header">
         <div className="landing-logo">
-          <span>🎋</span> Buwuhan Tracker
-        </div>
-        <div className="flex gap-12">
-          {user ? (
-            <button className="btn btn-secondary" onClick={() => navigate('/app')}>
-              Ke Dashboard
-            </button>
-          ) : (
-            <div className="flex gap-8">
-              <button className="btn btn-secondary" onClick={() => navigate('/app')}>
-                Coba Lokal
-              </button>
-              <button className="btn btn-primary" onClick={login}>
-                Masuk Google
-              </button>
-            </div>
-          )}
+          <img src="/favicon.svg" alt="Buwuhan Logo" width="32" height="32" style={{ marginRight: '8px' }} />
+          Buwuhan Tracker
         </div>
       </header>
 
