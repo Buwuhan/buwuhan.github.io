@@ -43,15 +43,17 @@ function AppLayout() {
       <div className="app-layout">
         <Sidebar />
         <main className="main-content">
-          <Routes>
-            <Route path="/" element={<Dashboard />} />
-            <Route path="/tamu" element={<BukuTamu />} />
-            <Route path="/tamu/:id" element={<DetailOrang />} />
-            <Route path="/acara" element={<Acara />} />
-            <Route path="/acara/:id" element={<DetailAcara />} />
-            <Route path="/catat" element={<CatatSumbangan />} />
-            <Route path="/pengaturan" element={<Pengaturan />} />
-          </Routes>
+          <div className="page-body">
+            <Routes>
+              <Route path="/" element={<Dashboard />} />
+              <Route path="/tamu" element={<BukuTamu />} />
+              <Route path="/tamu/:id" element={<DetailOrang />} />
+              <Route path="/acara" element={<Acara />} />
+              <Route path="/acara/:id" element={<DetailAcara />} />
+              <Route path="/catat" element={<CatatSumbangan />} />
+              <Route path="/pengaturan" element={<Pengaturan />} />
+            </Routes>
+          </div>
           <AppFooter />
         </main>
         <MobileNav />
