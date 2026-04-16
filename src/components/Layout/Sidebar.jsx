@@ -82,6 +82,12 @@ export default function Sidebar() {
             <span className="sync-text">Sinkronisasi Google Drive belum dikonfigurasi</span>
           </div>
         )}
+
+        <div className="sidebar-legal">
+          <a href="/privacy.html" target="_blank" rel="noopener noreferrer">Kebijakan Privasi</a>
+          <span>·</span>
+          <a href="/terms.html" target="_blank" rel="noopener noreferrer">Syarat & Ketentuan</a>
+        </div>
       </div>
     </aside>
   );

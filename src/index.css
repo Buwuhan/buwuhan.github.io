@@ -147,6 +147,7 @@ select option {
   .sync-badge .sync-text { display: none; }
   .sync-badge { justify-content: center; padding: 10px; width: 40px; height: 40px; border-radius: 50%; margin: 0 auto; }
   .legal-footer { display: none; }
+  .sidebar-legal { display: none; }
 }
 
 @media (max-width: 768px) {
@@ -243,6 +244,30 @@ select option {
   display: flex;
   flex-direction: column;
   gap: 8px;
+}
+
+.sidebar-legal {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 10px 0;
+  flex-wrap: wrap;
+}
+
+.sidebar-legal a {
+  font-size: 0.7rem;
+  font-weight: 400;
+  color: var(--text-muted);
+  text-decoration: none;
+  transition: color 0.15s;
+}
+
+.sidebar-legal a:hover { color: var(--gold-400); }
+
+.sidebar-legal span {
+  font-size: 0.65rem;
+  color: var(--text-muted);
+  opacity: 0.5;
 }
 
 /* ─── Sync Status Badge ─────────────────────────────────── */
